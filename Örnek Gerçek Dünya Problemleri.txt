@@ -1,0 +1,65 @@
+Örnek problemler: 
+Siz bunları ihtiyaca göre şekillendirebilirsiniz. 
+
+1. Kişisel / Kulüp Bütçe Optimizasyonu (Knapsack Basitleştirilmiş Hali)
+
+Karar değişkeni sayısı: 5–10
+Tip: 0–1 veya sürekli
+Amaç: Faydayı maksimize etmek, bütçe aşılmasın.
+
+Örn: 6 etkinlikten hangilerine bütçe ayrılacak → 6 boyut.
+
+2. Basit Rota/Kargo Optimizasyonu (Mini VRP/TSP)
+
+Karar değişkeni: 5–10 nokta
+Amaç: Toplam mesafeyi minimize etmek.
+Not: 6–8 müşteri ile öğrenciler rahat çözer.
+
+3. Enerji Verimli Oda Sıcaklık Ayarı (Saatlik 5–8 Karar)
+
+Karar değişkeni: 5–8 zaman diliminde sıcaklık set değeri
+Amaç: Enerjiyi minimize et, konforu koru.
+
+Örn: 6 saatlik derslik/oda sıcaklık kontrolü → 6 boyut.
+
+4. Aydınlatma Kontrol Optimizasyonu (5–10 Lamba Seviyesi)
+
+Karar değişkeni: Her lambanın parlaklık seviyesi (0–1)
+Amaç: Enerji + konfor optimizasyonu.
+
+5. Mini Ders Programı Optimizasyonu (Boyut Küçük tutulur)
+
+Karar değişkeni: 4–6 dersin saat seçimi
+Tip: Ayrık optimizasyon
+Amaç: Çakışma ve memnuniyetsizliği minimize etmek.
+
+Örn: 5 ders için 3 saat seçeneği → 5 değişken.
+
+6. Küçük Portföy Optimizasyonu (4–6 Varlık)
+
+Karar değişkeni: Her varlığın yüzde ağırlığı
+Amaç: Riski minimize et veya getiriyi maksimize et.
+Kısıt: Ağırlıkların toplamı = 1.
+
+7. Ürün Fiyatlandırma Optimizasyonu (4–8 ürün)
+
+Karar değişkeni: Her ürünün satış fiyatı
+Amaç: Geliri maksimize etmek
+Basit talep modeli: Talep = a – b*Fiyat.
+
+8. Basit Üretim Planlama (5–8 ürün)
+
+Karar değişkeni: Üretilecek miktarlar
+Amaç: Kârı maksimize etmek
+Kısıt: İş gücü, makine süresi, malzeme limiti.
+
+9. Yemek/Diyet Optimizasyonu (5–10 besin)
+
+Karar değişkeni: Yemek gramajları
+Amaç: Kaloriyi minimize ederken protein, yağ ve karbonhitrat hedeflerini tutturmak.
+
+10. Basit Zaman Çizelgesi Optimizasyonu (5–7 görev)
+
+Karar değişkeni: Her görevin başlama zamanı
+Amaç: Toplam gecikmeyi minimize etmek
+Kısıt: Öncelik ilişkileri.
