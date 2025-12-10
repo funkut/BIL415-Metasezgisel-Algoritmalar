@@ -2,29 +2,30 @@ function PlotTSPTour(problem, tour, titleStr)
 % PlotTSPTour
 % Verilen turu 2B düzlemde çizer.
 %
-% problem: CreateTSPInstance çıktısı
-% tour: 1 x nCities permütasyon vektörü
+% problem : CreateTSPInstance çıktısı
+% tour    : 1 x nCities permütasyon vektörü
 % titleStr: figure başlığı (string)
 
     coords = problem.coords;
-    tour   = tour(:)';
+    tour   = tour(:)';  % satır vektörüne çevir
 
     n = problem.nCities;
 
-    % Kapanmamışsa başlangıca geri ekle
+    % Tur kapalı değilse, başlangıca dönmeyi ekle
     if tour(1) ~= tour(end)
         tour = [tour tour(1)];
     end
 
-    % X ve Y koordinatlarını sırayla al
+    % Sıralı x,y koordinatları
     x = coords(tour, 1);
     y = coords(tour, 2);
 
+    % Çizim
     plot(x, y, '-o', 'LineWidth', 1.5, 'MarkerSize', 6);
     grid on;
     xlabel('X');
     ylabel('Y');
-    axis equal;
+    axis equal;         % Ölçek bozulmasın
 
     % Şehir numaralarını yanına yaz
     hold on;
@@ -33,10 +34,10 @@ function PlotTSPTour(problem, tour, titleStr)
     end
     hold off;
 
+    % Başlık
     if nargin >= 3 && ~isempty(titleStr)
         title(titleStr, 'Interpreter', 'none');
     else
         title('TSP Turu');
     end
-
 end

@@ -1,6 +1,6 @@
 function [BestTour, BestCost, BestCostHistory] = PSO_TSP(problem, params)
 % PSO_TSP
-% TSP icin Parcacik Suru Optimizasyonu (random-key temsil ile)
+% TSP icin Parcacik Suru Optimizasyonu (PSO) - random-key temsil ile
 %
 % Cozum temsili:
 %   - Her parcacik bir real vektor: position (1 x nCities)
@@ -69,7 +69,7 @@ function [BestTour, BestCost, BestCostHistory] = PSO_TSP(problem, params)
     for it = 1:MaxIt
 
         for i = 1:nPop
-            % Hizi guncelle
+            % Hizi guncelle (PSO denklemi)
             r1 = rand(1, nCities);
             r2 = rand(1, nCities);
             particle(i).Velocity = w .* particle(i).Velocity ...
@@ -79,7 +79,7 @@ function [BestTour, BestCost, BestCostHistory] = PSO_TSP(problem, params)
             % Pozisyonu guncelle
             particle(i).Position = particle(i).Position + particle(i).Velocity;
 
-            % Pozisyonu sinirla (0-1 arasi)
+            % Pozisyonu 0-1 araligina sinirla
             particle(i).Position = max(particle(i).Position, 0);
             particle(i).Position = min(particle(i).Position, 1);
 
@@ -112,6 +112,7 @@ end
 
 %% --- Yardimci: real vektor -> permutasyon ---
 function tour = DecodeRealToTour(position)
+    % position vektorunu siralayip indeksleri al
     [~, idx] = sort(position);
     tour = idx;
 end

@@ -12,7 +12,7 @@ function [BestTour, BestCost, BestCostHistory] = ACO_TSP(problem, params)
 %   BestCostHistory : Convergence curve
 
     nCities = problem.nCities;
-    D  = problem.distMatrix;
+    D  = problem.distMatrix;    % mesafe matrisi
 
     if ~isfield(params,'MaxIt'), params.MaxIt = 200; end
     if ~isfield(params,'nAnts'), params.nAnts = 40; end
@@ -30,7 +30,7 @@ function [BestTour, BestCost, BestCostHistory] = ACO_TSP(problem, params)
 
     % Sezgisel bilgi: 1 / mesafe
     eta = 1 ./ (D + eps);      % 0'a bolunme icin eps
-    tau = ones(nCities);       % baslangicta ayni feromon
+    tau = ones(nCities);       % baslangicta tum kenarlarda ayni feromon
 
     BestCost = inf;
     BestTour = [];
@@ -39,13 +39,14 @@ function [BestTour, BestCost, BestCostHistory] = ACO_TSP(problem, params)
 
     for it = 1:MaxIt
 
+        % Tum karincalarin cozumlerini saklayacagimiz yapi
         solutions(nAnts).tour = [];
         solutions(nAnts).cost = [];
 
         for k = 1:nAnts
             % Her karinca icin tur olustur
             tour = zeros(1,nCities);
-            startCity = randi(nCities);
+            startCity = randi(nCities); % rastgele baslangic sehri
             tour(1) = startCity;
 
             visited = false(1,nCities);
@@ -54,13 +55,14 @@ function [BestTour, BestCost, BestCostHistory] = ACO_TSP(problem, params)
             for step = 2:nCities
                 i = tour(step-1);   % mevcut sehir
 
-                % Gidilebilecek sehirler
+                % Gidilebilecek sehirler (henüz ziyaret edilmemiş)
                 allowed = find(~visited);
 
-                % Olasilik hesaplari
+                % Feromon ve sezgisel bilgi
                 tau_i = tau(i,allowed);
                 eta_i = eta(i,allowed);
 
+                % Gecis olasiligi (tau^alpha * eta^beta)
                 p = (tau_i.^alpha) .* (eta_i.^beta);
                 p = p / sum(p);
 
@@ -87,16 +89,18 @@ function [BestTour, BestCost, BestCostHistory] = ACO_TSP(problem, params)
             end
         end
 
-        % Feromon guncelleme
-        tau = (1 - rho) * tau;   % buharlasma
+        % Feromon buharlasma
+        tau = (1 - rho) * tau;
 
+        % Feromon ekleme (her karincanin turuna gore)
         for k = 1:nAnts
             tour = solutions(k).tour;
             cost = solutions(k).cost;
-            tour = [tour tour(1)];   % kapanis
+            tour = [tour tour(1)];   % turu kapat
 
-            deltaTau = Q / cost;
+            deltaTau = Q / cost;     % bu turun katkisi
 
+            % Turdaki her kenara feromon ekle
             for s = 1:nCities
                 i = tour(s);
                 j = tour(s+1);

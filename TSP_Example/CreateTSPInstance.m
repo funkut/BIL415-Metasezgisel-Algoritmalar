@@ -13,17 +13,19 @@ function problem = CreateTSPInstance(nCities, seed)
 %   problem.distMatrix  -> mesafe matrisi (n x n)
 %   problem.name        -> problem adı (string)
 
+    % nCities parametresi verilmemişse, varsayılan 20 olsun
     if nargin < 1 || isempty(nCities)
         nCities = 20;
     end
 
+    % seed verilmişse RNG sabitlenir (tekrarlanabilirlik için)
     if nargin >= 2 && ~isempty(seed)
-        rng(seed);      % Tekrarlanabilirlik
+        rng(seed);      % Tekrarlanabilir rasgelelik
     else
         rng('shuffle'); % Her çalıştırmada farklı
     end
 
-    % Şehir koordinatlarını [0,100] aralığında rasgele üret
+    % Şehir koordinatlarını [0, 100] aralığında rastgele üret
     coords = 100 * rand(nCities, 2);
 
     % Öklid mesafe matrisini hesapla
@@ -31,11 +33,11 @@ function problem = CreateTSPInstance(nCities, seed)
     for i = 1:nCities
         for j = 1:nCities
             if i == j
-                distMatrix(i,j) = 0;
+                distMatrix(i,j) = 0;   % Kendine mesafe 0
             else
                 dx = coords(i,1) - coords(j,1);
                 dy = coords(i,2) - coords(j,2);
-                distMatrix(i,j) = sqrt(dx^2 + dy^2);
+                distMatrix(i,j) = sqrt(dx^2 + dy^2); % Öklid mesafe
             end
         end
     end

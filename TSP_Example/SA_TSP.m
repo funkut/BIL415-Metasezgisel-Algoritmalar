@@ -38,14 +38,15 @@ function [BestTour, BestCost, BestCostHistory] = SA_TSP(problem, params)
         newTour = SwapMutation(currentTour);
         newCost = TSPCost(newTour, problem);
 
+        % Maliyet farki
         delta = newCost - currentCost;
 
         if delta <= 0
-            % Daha iyi cozum: kabul et
+            % Daha iyi cozum ise her zaman kabul
             currentTour = newTour;
             currentCost = newCost;
         else
-            % Daha kotu cozum: olasilikla kabul et (Metropolis kriteri)
+            % Daha kotu cozum: olasilikla kabul (Metropolis kriteri)
             p = exp(-delta / T);
             if rand <= p
                 currentTour = newTour;
@@ -53,13 +54,13 @@ function [BestTour, BestCost, BestCostHistory] = SA_TSP(problem, params)
             end
         end
 
-        % En iyi cozum guncelle
+        % Global en iyi guncelle
         if currentCost < BestCost
             BestCost = currentCost;
             BestTour = currentTour;
         end
 
-        % Sicakligi dusur
+        % Sicakligi azalt
         T = T * alpha;
 
         BestCostHistory(it) = BestCost;

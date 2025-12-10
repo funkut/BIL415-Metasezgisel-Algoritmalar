@@ -12,91 +12,92 @@
 %   - Convergence curve (en iyi maliyet vs iterasyon)
 %   - Buldugu en iyi turun grafigi
 %   - Calisma suresi olcumu
-%
-% NOT: CreateTSPInstance.m, TSPCost.m ve PlotTSPTour.m fonksiyonlari
-% onceki mesajlardaki haliyle kullanilmistir.
 
 clear; clc; close all;
 
 %% 1. Problem boyutu (ayarlanabilir)
-nCities = 5;          % Sehir sayisi buradan ayarlaniyor
+nCities = 40;          % Sehir sayisini buradan degistirebilirsin
 seed    = 1;           % Tekrarlanabilirlik icin sabit tohum
 
+% Problem struct'ını oluştur
 problem = CreateTSPInstance(nCities, seed);
 
 fprintf('Problem: %s, Sehir Sayisi: %d\n', problem.name, problem.nCities);
 
 %% 2. Ortak parametreler
-MaxIt = 200;           % Tum algoritmalar icin maksimum iterasyon
+MaxIt = 200;           % Tum algoritmalar icin maksimum iterasyon sayisi
 
-%% 3. Kullanilacak algoritma isimleri
+%% 3. Karsilastirilacak algoritmalarin listesi
 algList = {'GA','PSO','SA','TS','ACO','ABC'};
 nAlgs   = numel(algList);
 
 % Sonuclar icin kayit degiskenleri
-BestTours        = cell(nAlgs,1);
-BestCosts        = zeros(nAlgs,1);
-BestCostHistory  = cell(nAlgs,1);
-RunTimes         = zeros(nAlgs,1);
+BestTours        = cell(nAlgs,1);   % Her algoritmanin en iyi turu
+BestCosts        = zeros(nAlgs,1);  % Her algoritmanin en iyi maliyeti
+BestCostHistory  = cell(nAlgs,1);   % Her algoritmanin convergence curve'u
+RunTimes         = zeros(nAlgs,1);  % Calisma sureleri
 
 %% 4. Algoritmalari sirayla calistir
 for a = 1:nAlgs
-    algo = algList{a};
+    algo = algList{a};   % su anki algoritma ismi
     fprintf('\n=============================\n');
     fprintf('Algoritma: %s\n', algo);
     fprintf('=============================\n');
 
-    % Parametre yapisi (tum algoritmalar icin MaxIt ortak)
+    % Parametre yapisi (her seferinde MaxIt'i set et)
     params.MaxIt = MaxIt;
 
-    tic;    % sureyi baslat
+    % Sureyi baslat (tic/toc ile)
+    tic;
 
+    % Algoritmaya gore uygun fonksiyonu cagir
     switch algo
         case 'GA'
             % GA parametreleri
-            params.nPop     = 40;
-            params.Pc       = 0.8;
-            params.Pm       = 0.2;
-            params.TourSize = 3;
+            params.nPop     = 40;   % populasyon boyutu
+            params.Pc       = 0.8;  % crossover orani
+            params.Pm       = 0.2;  % mutasyon orani
+            params.TourSize = 3;    % turnuva boyutu
             [BestTours{a}, BestCosts(a), BestCostHistory{a}] = GA_TSP(problem, params);
 
         case 'PSO'
             % PSO parametreleri
-            params.nPop = 40;
-            params.w    = 0.7;
-            params.c1   = 1.5;
-            params.c2   = 1.5;
+            params.nPop = 40;    % parcacik sayisi
+            params.w    = 0.7;   % atalet agirligi
+            params.c1   = 1.5;   % bireysel (cognitive) katsayi
+            params.c2   = 1.5;   % sosyal (social) katsayi
             [BestTours{a}, BestCosts(a), BestCostHistory{a}] = PSO_TSP(problem, params);
 
         case 'SA'
             % Simule tavlama parametreleri
             params.T0    = 1.0;   % ilk sicaklik
-            params.alpha = 0.99;  % soguma katsayisi
+            params.alpha = 0.99;  % soguma oranı
             [BestTours{a}, BestCosts(a), BestCostHistory{a}] = SA_TSP(problem, params);
 
         case 'TS'
             % Tabu arama parametreleri
-            params.TabuTenure   = 7;   % tabu suresi
-            params.NeighSize    = 50;  % her iterasyonda denenecek swap sayisi
+            params.TabuTenure   = 7;    % tabu suresi
+            params.NeighSize    = 50;   % her iterasyonda bakilacak komsu sayisi
             [BestTours{a}, BestCosts(a), BestCostHistory{a}] = TS_TSP(problem, params);
 
         case 'ACO'
             % Karinca koloni parametreleri
-            params.nAnts = 40;
-            params.alpha = 1;     % feromon katsayisi
-            params.beta  = 5;     % sezgisel bilgi katsayisi (1/mesafe)
-            params.rho   = 0.5;   % buharlasma orani
-            params.Q     = 100;   % feromon miktar katsayisi
+            params.nAnts = 40;   % karinca sayisi
+            params.alpha = 1;    % feromon katsayisi
+            params.beta  = 5;    % sezgisel bilgi (1/d) katsayisi
+            params.rho   = 0.5;  % feromon buharlasma orani
+            params.Q     = 100;  % feromon miktar katsayisi
             [BestTours{a}, BestCosts(a), BestCostHistory{a}] = ACO_TSP(problem, params);
 
         case 'ABC'
             % Yapay ari kolonisi parametreleri
-            params.nFoodSources = 20;   % kaynak sayisi (koloni boyutu/2)
-            params.Limit        = 20;   % ayni cozumu gelistirme limiti
+            params.nFoodSources = 20;   % kaynak sayisi
+            params.Limit        = 20;   % gelismezse yenilenme limiti
             [BestTours{a}, BestCosts(a), BestCostHistory{a}] = ABC_TSP(problem, params);
     end
 
-    RunTimes(a) = toc;   % sureyi kaydet
+    % Gecen sureyi kaydet
+    RunTimes(a) = toc;
 
     fprintf('%s tamamlandi. En iyi maliyet = %.4f, Sure = %.4f sn\n', ...
         algo, BestCosts(a), RunTimes(a));
@@ -104,14 +105,15 @@ for a = 1:nAlgs
     % Her algoritmanin buldugu en iyi turu ciz
     figure('Name',['Best Tour - ' algo]);
     PlotTSPTour(problem, BestTours{a}, ...
-        sprintf('%s - En Iyi Tur - Maliyet: %.2f, Sure: %.2f sn', algo, BestCosts(a), RunTimes(a)));
+        sprintf('%s - En Iyi Tur - Maliyet: %.2f, Sure: %.2f sn', ...
+        algo, BestCosts(a), RunTimes(a)));
 end
 
-%% 5. Convergence curve karsilastirmasi
+%% 5. Convergence curve karsilastirmasi (hepsi tek grafikte)
 figure('Name','Convergence Curves - All Algorithms');
-colors = lines(nAlgs);
+colors = lines(nAlgs);   % otomatik renk paleti
 for a = 1:nAlgs
-    hist = BestCostHistory{a};
+    hist = BestCostHistory{a};      % ilgili algoritmanin tarihcesi
     plot(hist, 'Color', colors(a,:), 'LineWidth', 1.8); hold on;
 end
 grid on;
@@ -123,6 +125,7 @@ legend(algList, 'Location','best');
 %% 6. Ozet tablo
 resultsTable = table(algList', BestCosts, RunTimes, ...
     'VariableNames', {'Algorithm','BestCost','RunTime'});
+
 disp(' ');
 disp('==== Ozet Sonuclar ====');
 disp(resultsTable);

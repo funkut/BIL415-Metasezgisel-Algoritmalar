@@ -3,7 +3,7 @@ function [BestTour, BestCost, BestCostHistory] = TS_TSP(problem, params)
 % TSP icin Tabu Arama algoritmasi
 %
 % Basit versiyon:
-%   - Komşuluk: tum (i,j) swap hareketleri
+%   - Komşuluk: swap(i,j) hareketleri
 %   - Tabu listesi: belli sure icin (i,j) swap tabu
 %
 % Girdi:
@@ -43,7 +43,7 @@ function [BestTour, BestCost, BestCostHistory] = TS_TSP(problem, params)
         bestNeighborCost = inf;
         bestSwap = [0 0];
 
-        % Belirli sayida komsuluk hareketi incele
+        % Belirli sayida komsuluk hareketi incele (NeighSize kadar)
         for k = 1:NeighSize
             % Rastgele iki sehir sec
             i = randi(nCities);
@@ -51,17 +51,18 @@ function [BestTour, BestCost, BestCostHistory] = TS_TSP(problem, params)
             while j == i
                 j = randi(nCities);
             end
-            if i > j
+            if i > j   % (i,j) siralama
                 tmp = i; i = j; j = tmp;
             end
 
-            % Swap uygula
+            % Swap uygula -> komsu tur
             newTour = currentTour;
             newTour([i j]) = newTour([j i]);
             newCost = TSPCost(newTour, problem);
 
-            % Tabu kontrolu (aspiration: eger global en iyiden daha iyiyse tabu olsa da kabul)
+            % Tabu kontrolu
             isTabu = tabu(i,j) > 0;
+            % Aspiration kriteri: eger global en iyiden iyiyse tabu olsa bile kabul
             if (isTabu && newCost < BestCost) || ~isTabu
                 % Bu komsu simdiye kadar en iyiyse kaydet
                 if newCost < bestNeighborCost
@@ -72,14 +73,14 @@ function [BestTour, BestCost, BestCostHistory] = TS_TSP(problem, params)
             end
         end
 
-        % Eger komsu bulunamadiysa (NeighSize cok kucukse olabilir), random swap yap
+        % Eger hic komsu bulunamazsa (teorik olarak zor ama), rastgele swap yap
         if isempty(bestNeighborTour)
             bestNeighborTour = SwapMutation(currentTour);
             bestNeighborCost = TSPCost(bestNeighborTour, problem);
             bestSwap = [1 2];  % dummy
         end
 
-        % Tabu listelerini bir adim azalt
+        % Tabu suresini azalt
         tabu = max(tabu - 1, 0);
 
         % En iyi komsuya gecerken ilgili swap'i tabu yap
@@ -87,7 +88,7 @@ function [BestTour, BestCost, BestCostHistory] = TS_TSP(problem, params)
         tabu(i,j) = TabuTenure;
         tabu(j,i) = TabuTenure;
 
-        % Komşu cozum yeni current olur
+        % Komsu cozum yeni current olur
         currentTour = bestNeighborTour;
         currentCost = bestNeighborCost;
 
