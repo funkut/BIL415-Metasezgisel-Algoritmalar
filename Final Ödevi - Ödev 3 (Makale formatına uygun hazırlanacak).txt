@@ -1,0 +1,56 @@
+TSP Tabanlı Gerçek Dünya Problem Tasarımı
+
+Bu ödevde öğrencilerden, Gezgin Satıcı Problemi (Traveling Salesman Problem – TSP) temelli gerçek dünya ile ilişkili bir problem tanımlamaları ve bu problemi en az bir metasezgisel algoritma kullanarak çözmeleri beklenmektedir.
+
+Öğrenciler:
+
+Problemin bağlamını kendileri seçecek,
+
+TSP modellemesini kendileri kuracak,
+
+Seçtikleri metasezgisel algoritmayı TSP’ye uygun biçimde uyarlayacaklardır.
+
+🧠 Konu Seçimi İçin Örnek Problem Önerileri
+
+(Aşağıdaki başlıklar zorunlu değildir, yalnızca yönlendirici öneri niteliğindedir.)
+
+🔹 1. Acil Servis / Ambulans Rota Planlaması
+
+Bir ambulansın, şehir içindeki acil müdahale noktalarını en kısa mesafe ile ziyaret etmesi.
+
+🔹 2. Kargo – E-Ticaret Dağıtım Rotalaması
+
+Bir dağıtım aracının, depo çıkışlı olarak müşterilere en verimli sırayla paket ulaştırması.
+
+🔹 3. Üniversite Kampüsünde Güvenlik veya Temizlik Rotası
+
+Bir görevlinin, kampüs içindeki kritik noktaları tek tek dolaşarak en kısa turu tamamlaması.
+
+🔹 4. Turistik Gezi veya Kültürel Rota Planlama
+
+Bir turistin, sınırlı sürede en verimli gezi rotasını planlaması.
+
+🔹 5. Sanayi Tesisi İçinde Bakım / Denetim Rotası
+
+Bir mühendisin, fabrikadaki makineleri en kısa sürede kontrol edebilmesi için rota oluşturması.
+
+🔹 6. Drone / İnsansız Araç Görev Planlaması
+
+Bir drone’un, belirlenen hedef noktaları en az enerji harcayarak ziyaret etmesi.
+
+🔹 7. Okul Servisi / Personel Taşıma Rota Planlaması
+
+Bir servis aracının, belirlenen durakları en uygun sırayla ziyaret etmesi.
+
+🔹 8. Veri Toplama / Sensör Okuma Rotası
+
+Mobil bir cihazın veya robotun, sahadaki sensörleri en verimli şekilde dolaşması.
+
+Rapor ve Puanlama İçin Önemli Notlar
+
+-Seçilen problem klasik TSP, ağırlıklı TSP veya çok amaçlı TSP olabilir.
+-Çözüm mutlaka permütasyon temelli olmalıdır. (Yani ziyaret edilecek noktaların tekrar etmeyen, eksiksiz bir sıralaması şeklinde temsil edilmesi gerekmektedir.)
+-Metasezgisel algoritma seçimi serbesttir.
+-Gerçek dünya bağlamının mantıklı ve tutarlı olması beklenmektedir.
+
+Ödev raporu için makale formatını ekliyorum. 

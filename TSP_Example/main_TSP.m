@@ -16,7 +16,7 @@
 clear; clc; close all;
 
 %% 1. Problem boyutu (ayarlanabilir)
-nCities = 40;          % Sehir sayisini buradan degistirebilirsin
+nCities = 81;          % Sehir sayisini buradan degistirebilirsin
 seed    = 1;           % Tekrarlanabilirlik icin sabit tohum
 
 % Problem struct'ını oluştur
